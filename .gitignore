@@ -1,0 +1,13 @@
+.DS_Store
+.swiftpm/
+.build/
+DerivedData/
+*.xcuserstate
+*.dSYM/
+*.xcarchive/
+*.log
+*.zip
+*.app/
+Resources/Kado.icns
+Resources/Kado.iconset/
+release/
