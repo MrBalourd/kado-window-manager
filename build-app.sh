@@ -3,7 +3,7 @@ set -eu
 cd "$(dirname "$0")"
 swift Scripts/generate-app-icon.swift
 iconutil -c icns Resources/Kado.iconset -o Resources/Kado.icns
-swift build -c release
+swift build -c release -Xswiftc -gnone
 APP="$PWD/Kado.app"
 SIGNING_IDENTITY="${KADO_SIGNING_IDENTITY:--}"
 if [ "$SIGNING_IDENTITY" != "-" ] && ! security find-identity -v -p codesigning | grep -Fq "$SIGNING_IDENTITY"; then

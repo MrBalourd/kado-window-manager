@@ -1,60 +1,71 @@
-# Kado
+<p align="center">
+  <img src="docs/images/kado-app-icon.png" width="88" alt="Kado app icon">
+</p>
 
-Kado is a native macOS window manager that arranges app windows as you work. It lives in the menu bar and keeps its preferences on your Mac.
+<h1 align="center">Kado</h1>
 
-## Features
+<p align="center">A calmer way to arrange your Mac’s windows.</p>
 
-- Arrange windows in **Grid** or **Columns** layouts, with one to four windows per display.
-- Tile new windows automatically and fill the available space when a window closes.
-- Adapt column widths to the minimum sizes applications accept. If the requested layout cannot fit, Kado falls back to Grid so windows remain visible.
-- Swap windows with the mouse or keyboard, and stack extra windows in the active tile when there are more windows than available tiles.
-- Keep independent layouts and window limits for each display.
-- Use **Presentation** to expand the focused window across one display and cover the unused area.
-- Use **Dim surroundings** to fade other windows while keeping the focused window, menu bar, and Dock visible.
-- Open the **Window switcher** to select a window from the keyboard.
-- Customize window borders, highlight colors, hover focus, app exclusions, and keyboard shortcuts.
+<p align="center">
+  <a href="https://github.com/MrBalourd/kado-window-manager/releases/latest"><strong>Download Kado for macOS</strong></a>
+  · <a href="#install">Install guide</a>
+  · <a href="#features">Features</a>
+</p>
 
-## Requirements
+<p align="center">macOS 14+ · Apple silicon and Intel · Native Swift app</p>
 
-- macOS 14 or later.
-- Xcode Command Line Tools with the Swift 6 toolchain.
-- Accessibility permission, required for reading window geometry and moving windows.
+![Kado settings showing layout, window count, spacing, and appearance controls](docs/images/settings-arrangement.png)
 
-Kado uses Accessibility to arrange windows. It does not read window contents or typed characters, and it does not send usage analytics. Settings are stored locally on the Mac.
+Kado arranges windows as you work. Choose a layout, set how many windows fit on each display, and let Kado make room as windows open and close.
 
-## Install from source
+## Install
 
-1. Install the command line tools if needed:
+### Download the app
 
-   ```sh
-   xcode-select --install
-   ```
+1. Open [the latest Kado release](https://github.com/MrBalourd/kado-window-manager/releases/latest).
+2. Download `Kado-0.1.0-macos-universal.zip` and open it.
+3. Move `Kado.app` to **Applications**.
+4. Open Kado. On the first launch, macOS may block an app downloaded from GitHub. Control-click `Kado.app`, choose **Open**, then confirm.
+5. Allow window control in **System Settings → Privacy & Security → Accessibility**. Enable **Kado**. If it is not listed, use the add button and choose `Kado.app` in Applications.
+6. Open Kado from the menu bar and switch on **Automatic tiling**.
 
-2. Clone this repository and build the app:
+The release is a universal build for Apple silicon and Intel Macs. It is ad-hoc signed and not notarized, so macOS may ask you to confirm the first launch. Kado needs Accessibility access to move and resize windows.
 
-   ```sh
-   git clone https://github.com/MrBalourd/kado-window-manager.git
-   cd kado-window-manager
-   ./build-app.sh
-   ```
+### Build it yourself
 
-   The script creates `Kado.app` in the repository folder. It uses ad-hoc signing by default, so the build does not depend on a developer certificate tied to one computer.
+Requirements: macOS 14 or later and Xcode Command Line Tools with Swift 6. Install the tools if needed, then run:
 
-3. Move `Kado.app` to **Applications** in Finder and open it. If macOS asks you to confirm an app from an unidentified developer, Control-click the app, choose **Open**, then confirm.
+```sh
+xcode-select --install
+git clone https://github.com/MrBalourd/kado-window-manager.git
+cd kado-window-manager
+./build-app.sh
+```
 
-4. Allow window control in **System Settings → Privacy & Security → Accessibility**. Enable **Kado** in the list. If it is not listed, use the add button and select `/Applications/Kado.app`.
+This creates `Kado.app` for the Mac you are using. The script uses ad-hoc signing by default and does not need a developer certificate.
 
-5. Open Kado from the menu bar and enable **Automatic tiling**.
-
-## Build a ZIP package
-
-Run:
+To create a universal ZIP for a GitHub Release, run:
 
 ```sh
 ./package-release.sh
 ```
 
-This builds `Kado.app` and writes a ZIP file under `release/`. The ZIP is intended to be attached to a GitHub Release by a maintainer. It is not included in the source repository.
+The package appears in `release/` as `Kado-<version>-macos-universal.zip`.
+
+## Features
+
+- **Automatic tiling:** new windows get a place; when one closes, the others use the space.
+- **Grid or Columns:** choose a layout and tile one to four windows on each display.
+- **Adaptive columns:** Kado respects the minimum widths apps accept and shares remaining space between windows. If a layout still cannot fit, it switches to Grid to keep windows visible.
+- **Window swapping:** drag to swap, or use keyboard shortcuts to move the focused window between tiles.
+- **Overflow stacks:** when more windows are open than tiles, extra windows stack in the active tile.
+- **Per-display layouts:** set a different layout and window limit for each screen.
+- **Presentation:** enlarge the focused window across one display and cover the unused area.
+- **Screen dimming:** fade other windows and the desktop around the one you are using, with optional blur.
+- **Window switcher:** open a keyboard-driven view to choose another window.
+- **Personal controls:** customize borders, accent color, hover focus, app rules, and shortcuts.
+
+![Kado settings for screen dimming, dim amount, and background blur](docs/images/settings-dimming.png)
 
 ## Keyboard shortcuts
 
@@ -66,20 +77,24 @@ Shortcuts can be enabled or disabled in **Kado settings → Shortcuts**.
 | `⌃⌥←` `⌃⌥→` `⌃⌥↑` `⌃⌥↓` | Swap the focused window |
 | `⌥Tab` / `⇧⌥Tab` | Open or navigate the window switcher |
 | `⌃⌥P` | Toggle Presentation |
-| `⌃⌥D` | Toggle Dim surroundings |
+| `⌃⌥D` | Toggle Screen dimming |
 
 `⌃` means Control, `⌥` Option, `⌘` Command, and `⇧` Shift.
 
+## Privacy
+
+Kado uses macOS Accessibility to read window geometry and move windows. It does not read window contents or typed characters, and it does not send usage analytics. Preferences stay on your Mac.
+
 ## Troubleshooting
 
-- **Windows do not move:** confirm that Kado is enabled under **System Settings → Privacy & Security → Accessibility**, then quit and reopen Kado.
-- **A window stays larger than its tile:** some applications enforce a minimum window size. Kado redistributes column space and switches to Grid when the requested layout still cannot fit.
-- **A shortcut does nothing:** check that shortcuts are enabled in **Kado settings → Shortcuts** and that another app is not using the same combination.
-- **macOS blocks the first launch:** Control-click `Kado.app`, choose **Open**, and confirm the prompt. Locally built packages use ad-hoc signing and are not notarized.
+- **Windows do not move:** check that Kado is enabled under **System Settings → Privacy & Security → Accessibility**, then quit and reopen Kado.
+- **A window remains larger than its tile:** some apps enforce minimum sizes. Kado redistributes column width and uses Grid if the requested layout still cannot fit.
+- **A shortcut does nothing:** enable shortcuts in **Kado settings → Shortcuts** and check whether another app uses the same key combination.
+- **macOS blocks the first launch:** Control-click `Kado.app`, choose **Open**, and confirm the prompt.
 
 ## Contributing
 
-Bug reports and improvement suggestions can be filed in the repository’s **Issues** tab. Please include your macOS version, the selected layout, and the steps needed to reproduce a problem. Do not attach screenshots that expose private window contents.
+Report bugs and suggest improvements in [GitHub Issues](https://github.com/MrBalourd/kado-window-manager/issues). Include your macOS version and clear steps to reproduce the issue. Avoid attaching screenshots that expose private window contents.
 
 ## License
 
